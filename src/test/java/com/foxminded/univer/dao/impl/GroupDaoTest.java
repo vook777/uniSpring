@@ -11,13 +11,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.foxminded.univer.dao.PropertiesHolder;
+import com.foxminded.univer.models.Faculty;
 import com.foxminded.univer.models.Group;
 
 public class GroupDaoTest extends DBTestCase {
 
-    private GroupDao groupDao = new GroupDao();
+    private GroupDao groupDao = Mockito.mock(GroupDao.class);
 
     public GroupDaoTest(String name) {
         super(name);
@@ -33,8 +35,10 @@ public class GroupDaoTest extends DBTestCase {
         String[] toIgnore = { "id" };
         ITable expectedTable = getExpectedTable("addGroupTestTable.xml");
         Group group = new Group();
+        Faculty faculty = new Faculty();
+        faculty.setId(4);
         group.setName("G1");
-        group.setFacultyId(4);
+        group.setFaculty(faculty);
 
         // When
         groupDao.save(group);
@@ -51,7 +55,9 @@ public class GroupDaoTest extends DBTestCase {
         Group group = new Group();
         group.setId(1);
         group.setName("P1");
-        group.setFacultyId(1);
+        Faculty faculty = new Faculty();
+        faculty.setId(1);
+        group.setFaculty(faculty);
 
         // When
         groupDao.save(group);
@@ -94,7 +100,10 @@ public class GroupDaoTest extends DBTestCase {
         Group expectedGroup = new Group();
         expectedGroup.setId(1);
         expectedGroup.setName("M1");
-        expectedGroup.setFacultyId(1);
+        Faculty faculty = new Faculty();
+        faculty.setId(1);
+        expectedGroup.setFaculty(faculty);
+        
 
         // When
         Group actualGroup = groupDao.findById(1).get();

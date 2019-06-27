@@ -8,13 +8,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.foxminded.univer.dao.impl.CourseDao;
 import com.foxminded.univer.models.Course;
+import com.foxminded.univer.spring.config.AppConfig;
+import com.foxminded.univer.spring.dao.CourseDaoSpring;
 
 @WebServlet("/saveCourse")
 public class SaveCourse extends HttpServlet {
 
-	private CourseDao courseDao = new CourseDao();
+	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	private CourseDaoSpring courseDao = context.getBean(CourseDaoSpring.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

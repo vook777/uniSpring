@@ -13,6 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.foxminded.univer.dao.PropertiesHolder;
+import com.foxminded.univer.models.Faculty;
 import com.foxminded.univer.models.Teacher;
 
 public class TeacherDaoTest extends DBTestCase {
@@ -35,7 +36,9 @@ public class TeacherDaoTest extends DBTestCase {
         Teacher teacher = new Teacher();
         teacher.setFirstName("Dan");
         teacher.setLastName("Drake");
-        teacher.setFacultyId(4);
+        Faculty faculty = new Faculty();
+        faculty.setId(4);
+        teacher.setFaculty(faculty);
 
         // When
         teacherDao.save(teacher);
@@ -53,7 +56,9 @@ public class TeacherDaoTest extends DBTestCase {
         teacher.setId(1);
         teacher.setFirstName("Alf");
         teacher.setLastName("Ant");
-        teacher.setFacultyId(3);
+        Faculty faculty = new Faculty();
+        faculty.setId(4);
+        teacher.setFaculty(faculty);
 
         // When
         teacherDao.save(teacher);
@@ -97,7 +102,9 @@ public class TeacherDaoTest extends DBTestCase {
         expectedTeacher.setId(1);
         expectedTeacher.setFirstName("Alf");
         expectedTeacher.setLastName("Ant");
-        expectedTeacher.setFacultyId(1);
+        Faculty faculty = new Faculty();
+        faculty.setId(4);
+        expectedTeacher.setFaculty(faculty);
 
         // When
         Teacher actualTeacher = teacherDao.findById(1).get();

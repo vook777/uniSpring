@@ -2,22 +2,29 @@ package com.foxminded.univer.service;
 
 import java.util.List;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.foxminded.univer.dao.impl.FacultyDao;
 import com.foxminded.univer.dao.impl.GroupDao;
 import com.foxminded.univer.dao.impl.StudentDao;
 import com.foxminded.univer.models.Group;
 import com.foxminded.univer.models.Student;
+import com.foxminded.univer.spring.config.AppConfig;
+import com.foxminded.univer.spring.dao.FacultyDaoSpring;
+import com.foxminded.univer.spring.dao.GroupDaoSpring;
+import com.foxminded.univer.spring.dao.StudentDaoSpring;
 
 public class StudentService {
 
-	private StudentDao studentDao = new StudentDao();
-	private GroupDao groupDao = new GroupDao();
-	private FacultyDao facultyDao = new FacultyDao(); 
+	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	private FacultyDaoSpring facultyDao = context.getBean(FacultyDaoSpring.class);
+	private GroupDaoSpring groupDao = context.getBean(GroupDaoSpring.class);
+	private StudentDaoSpring studentDao = context.getBean(StudentDaoSpring.class);
 
 	public Student save(Integer id, String firstName, String lastName, Integer groupId, String studentCardNumber) throws ClassNotFoundException {
 		Student studentToSave = new Student();
-		Group group = groupDao.findById(groupId).get();
-		group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())).get());
+		Group group = groupDao.findById(groupId);
+		group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())));
 		studentToSave.setId(id);
 		studentToSave.setFirstName(firstName);
 		studentToSave.setLastName(lastName);
@@ -33,9 +40,9 @@ public class StudentService {
 	}
 	
 	public Student findById(Integer studentId) throws ClassNotFoundException {
-		Student studentToReturn = studentDao.findById(studentId).get();
-		Group group = groupDao.findById(studentDao.getGroupId(studentId)).get();
-		group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())).get());
+		Student studentToReturn = studentDao.findById(studentId);
+		Group group = groupDao.findById(studentDao.getGroupId(studentId));
+		group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())));
 		studentToReturn.setGroup(group);
 		return studentToReturn;
 	}
@@ -43,13 +50,9 @@ public class StudentService {
 	public List<Student> findAll() throws ClassNotFoundException {
 		List<Student> students = studentDao.findAll();
 		students.stream().forEach(student -> {
-			try {
-				Group group = groupDao.findById(studentDao.getGroupId(student.getId())).get();
-				group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())).get());
-				student.setGroup(group);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+			Group group = groupDao.findById(studentDao.getGroupId(student.getId()));
+			group.setFaculty(facultyDao.findById(groupDao.getFacultyId(group.getId())));
+			student.setGroup(group);
 		});
 		return students;
 	}

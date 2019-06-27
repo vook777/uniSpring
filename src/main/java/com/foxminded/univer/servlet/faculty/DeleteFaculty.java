@@ -8,25 +8,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import com.foxminded.univer.dao.impl.FacultyDao;
 import com.foxminded.univer.models.Faculty;
+import com.foxminded.univer.spring.config.AppConfig;
+import com.foxminded.univer.spring.dao.FacultyDaoSpring;
 
 @WebServlet("/deleteFaculty")
 public class DeleteFaculty extends HttpServlet {
 
-	private FacultyDao facultyDao = new FacultyDao();
+	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	private FacultyDaoSpring facultyDao = context.getBean(FacultyDaoSpring.class);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		Integer id = Integer.parseInt(req.getParameter("facultyId"));
-		try {
-			Faculty facultyToDelete = facultyDao.findById(id).get();
-			facultyDao.delete(facultyToDelete);
-			req.setAttribute("deletedFaculty", facultyToDelete);
-		} catch (ClassNotFoundException e) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
-		}
+		Faculty facultyToDelete = facultyDao.findById(id);
+		facultyDao.delete(facultyToDelete);
+		req.setAttribute("deletedFaculty", facultyToDelete);
 		req.getRequestDispatcher("/faculty/showDeleted.jsp").forward(req, resp);
 	}
 }

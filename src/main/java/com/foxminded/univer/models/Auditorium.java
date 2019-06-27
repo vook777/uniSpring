@@ -5,7 +5,7 @@ public class Auditorium {
 	private Integer id;
 	private String name;
 	private Integer capacity;
-
+	
 	public Integer getId() {
 		return id;
 	}

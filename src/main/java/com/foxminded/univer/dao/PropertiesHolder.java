@@ -29,10 +29,10 @@ public class PropertiesHolder {
             throw new DaoException("Cannot load properties");
         }
         log.debug("Setting properties");
-        URL = properties.getProperty("URL");
-        USER = properties.getProperty("USER");
-        PASSWORD = properties.getProperty("PASSWORD");
-        DRIVER = properties.getProperty("DRIVER");
+        URL = properties.getProperty("url");
+        USER = properties.getProperty("dbuser");
+        PASSWORD = properties.getProperty("dbpassword");
+        DRIVER = properties.getProperty("driver");
         log.info("Properties set");
     }
 }

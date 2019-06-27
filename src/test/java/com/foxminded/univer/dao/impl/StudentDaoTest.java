@@ -13,13 +13,15 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.foxminded.univer.dao.PropertiesHolder;
+import com.foxminded.univer.models.Group;
 import com.foxminded.univer.models.Student;
 
 public class StudentDaoTest extends DBTestCase {
 
-    private StudentDao studentDao = new StudentDao();
+    private StudentDao studentDao = Mockito.mock(StudentDao.class);
 
     public StudentDaoTest(String name) {
         super(name);
@@ -38,7 +40,9 @@ public class StudentDaoTest extends DBTestCase {
         student.setStudentCardNumber("ef67");
         student.setFirstName("Lee");
         student.setLastName("Sin");
-        student.setGroupId(2);
+        Group group = new Group();
+        group.setId(2);
+        student.setGroup(group);
 
         // When
         studentDao.save(student);
@@ -57,7 +61,9 @@ public class StudentDaoTest extends DBTestCase {
         student.setFirstName("Max");
         student.setLastName("Pain");
         student.setStudentCardNumber("ab23");
-        student.setGroupId(2);
+        Group group = new Group();
+        group.setId(2);
+        student.setGroup(group);
 
         // When
         studentDao.save(student);
@@ -76,7 +82,9 @@ public class StudentDaoTest extends DBTestCase {
         student.setFirstName("Max");
         student.setLastName("Pain");
         student.setStudentCardNumber("ab23");
-        student.setGroupId(3);
+        Group group = new Group();
+        group.setId(3);
+        student.setGroup(group);
 
         // When
         studentDao.delete(student);
@@ -106,7 +114,9 @@ public class StudentDaoTest extends DBTestCase {
         expectedStudent.setFirstName("Peter");
         expectedStudent.setLastName("Pan");
         expectedStudent.setStudentCardNumber("bc34");
-        expectedStudent.setGroupId(3);
+        Group group = new Group();
+        group.setId(3);
+        expectedStudent.setGroup(group);
 
         // When
         Student actualStudent = studentDao.findById(2).get();

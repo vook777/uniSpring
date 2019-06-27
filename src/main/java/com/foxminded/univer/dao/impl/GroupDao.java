@@ -20,7 +20,6 @@ import com.foxminded.univer.models.Group;
 public class GroupDao extends JndiDao implements Dao<Group> {
 
 	private static final Logger log = LogManager.getLogger(GroupDao.class);
-	private StudentDao studentDao = new StudentDao();
 
 	@Override
 	public Group save(Group group) throws ClassNotFoundException {
@@ -47,7 +46,6 @@ public class GroupDao extends JndiDao implements Dao<Group> {
 			try (ResultSet resultSet = statement.getGeneratedKeys();) {
 				if (resultSet.next()) {
 					log.trace("Create group to return");
-					//group.setId(resultSet.getInt("id"));
 					group = findById(resultSet.getInt("id")).get();
 					log.info("Created " + group);
 				}
