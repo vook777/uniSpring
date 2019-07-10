@@ -5,12 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.dbunit.Assertion;
-import org.dbunit.DBTestCase;
 import org.dbunit.JndiBasedDBTestCase;
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
@@ -20,9 +15,7 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.foxminded.univer.dao.PropertiesHolder;
 import com.foxminded.univer.models.Auditorium;
@@ -37,7 +30,7 @@ public class AuditoriumDaoTest extends JndiBasedDBTestCase {
 		Class.forName("org.postgresql.Driver");
 		Connection connection = DriverManager.getConnection(PropertiesHolder.URL, PropertiesHolder.USER,
 				PropertiesHolder.PASSWORD);
-		Mockito.doReturn(connection).when(auditoriumDao).getConnection();
+		//Mockito.doReturn(connection).when(auditoriumDao).getConnection();
 	}
 
 	public AuditoriumDaoTest(String name) {

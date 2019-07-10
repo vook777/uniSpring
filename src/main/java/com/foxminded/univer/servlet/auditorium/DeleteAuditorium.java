@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.foxminded.univer.dao.impl.AuditoriumDao;
@@ -18,8 +19,8 @@ import com.foxminded.univer.spring.dao.AuditoriumDaoSpring;
 @WebServlet("/deleteAuditorium")
 public class DeleteAuditorium extends HttpServlet {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private AuditoriumDaoSpring auditoriumDao = context.getBean(AuditoriumDaoSpring.class);
+	@Autowired
+	private AuditoriumDaoSpring auditoriumDao;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.foxminded.univer.dao.impl.AuditoriumDao;
@@ -13,8 +14,11 @@ import com.foxminded.univer.spring.dao.AuditoriumDaoSpring;
 
 public class AuditoriumService {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private AuditoriumDaoSpring auditoriumDao = context.getBean(AuditoriumDaoSpring.class);
+	private AuditoriumDaoSpring auditoriumDao;
+	
+	public AuditoriumService(AuditoriumDaoSpring ad) {
+		this.auditoriumDao = ad;
+	}
 	
 	public Auditorium findById(Integer auditoriumId) throws ClassNotFoundException {
 		return auditoriumDao.findById(auditoriumId);

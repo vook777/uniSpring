@@ -14,11 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Auditorium;
 import com.foxminded.univer.models.AuditoriumMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
-@Component
 public class AuditoriumDaoSpring {
 
 	private JdbcTemplate jdbcTemplate;
+	private DataSource dataSource;
 
 	private final String SQL_CREATE_AUDITORIUM = "insert into auditoriums (name, capacity) VALUES (?, ?)";
 	private final String SQL_UPDATE_AUDITORIUM = "update auditoriums set name = ?, capacity = ? where id = ?";
@@ -26,8 +27,8 @@ public class AuditoriumDaoSpring {
 	private final String SQL_FIND_AUDITORIUM = "select * from auditoriums where id = ?";
 	private final String SQL_GET_ALL = "select * from auditoriums";
 
-	@Autowired
-	public AuditoriumDaoSpring(DataSource dataSource) {
+	public AuditoriumDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
