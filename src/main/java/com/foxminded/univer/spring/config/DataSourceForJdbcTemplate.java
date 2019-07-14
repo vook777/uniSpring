@@ -1,16 +1,8 @@
 package com.foxminded.univer.spring.config;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import com.foxminded.univer.dao.DaoException;
-import com.foxminded.univer.dao.PropertiesHolder;
 
 public class DataSourceForJdbcTemplate {
 
@@ -26,5 +18,37 @@ public class DataSourceForJdbcTemplate {
 		dataSource.setUsername(user);
 		dataSource.setPassword(password);
 		return (DataSource) dataSource;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

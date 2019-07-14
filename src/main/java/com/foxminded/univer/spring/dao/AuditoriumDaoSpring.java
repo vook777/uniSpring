@@ -18,8 +18,8 @@ import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 public class AuditoriumDaoSpring {
 
-	private JdbcTemplate jdbcTemplate;
 	private DataSource dataSource;
+	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_AUDITORIUM = "insert into auditoriums (name, capacity) VALUES (?, ?)";
 	private final String SQL_UPDATE_AUDITORIUM = "update auditoriums set name = ?, capacity = ? where id = ?";

@@ -1,25 +1,36 @@
 package com.foxminded.univer.servlet.student;
 
 import java.io.IOException;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.foxminded.univer.spring.config.AppConfig;
-import com.foxminded.univer.spring.dao.GroupDaoSpring;
+import com.foxminded.univer.service.GroupService;
 
 @WebServlet("/saveStudentForm")
 public class SaveStudentForm extends HttpServlet {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private GroupDaoSpring groupDao = context.getBean(GroupDaoSpring.class);
-	
+	@Autowired
+	private GroupService groupService;
+
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("groups", groupDao.findAll());
+		try {
+			req.setAttribute("groups", groupService.findAll());
+		} catch (ClassNotFoundException e) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+		}
 		req.getRequestDispatcher("/student/saveStudent.jsp").forward(req, resp);
+	}
+
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
 	}
 }

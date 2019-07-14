@@ -2,19 +2,19 @@ package com.foxminded.univer.service;
 
 import java.util.List;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.foxminded.univer.models.Faculty;
 import com.foxminded.univer.models.Teacher;
-import com.foxminded.univer.spring.config.AppConfig;
 import com.foxminded.univer.spring.dao.FacultyDaoSpring;
 import com.foxminded.univer.spring.dao.TeacherDaoSpring;
 
 public class TeacherService {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private FacultyDaoSpring facultyDao = context.getBean(FacultyDaoSpring.class);
-	private TeacherDaoSpring teacherDao = context.getBean(TeacherDaoSpring.class);
+	@Autowired
+	private FacultyDaoSpring facultyDao;
+	@Autowired
+	private TeacherDaoSpring teacherDao;
 	
 	public Teacher save(Integer id, String firstName, String lastName, Integer facultyId) throws ClassNotFoundException {
 		Teacher teacherToSave = new Teacher();
@@ -46,5 +46,21 @@ public class TeacherService {
 			teacher.setFaculty(faculty);
 		});
 		return teachers;
+	}
+
+	public FacultyDaoSpring getFacultyDao() {
+		return facultyDao;
+	}
+
+	public void setFacultyDao(FacultyDaoSpring facultyDao) {
+		this.facultyDao = facultyDao;
+	}
+
+	public TeacherDaoSpring getTeacherDao() {
+		return teacherDao;
+	}
+
+	public void setTeacherDao(TeacherDaoSpring teacherDao) {
+		this.teacherDao = teacherDao;
 	}
 }

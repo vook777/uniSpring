@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Group;
 import com.foxminded.univer.models.GroupMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class GroupDaoSpring {
 
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_GROUP = "insert into groups (group_name, faculty_id) VALUES (?, ?)";
@@ -30,7 +32,8 @@ public class GroupDaoSpring {
 	private final String GET_FACULTY_ID = "select faculty_id from groups where id = ?";
 
 	@Autowired
-	public GroupDaoSpring(DataSource dataSource) {
+	public GroupDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 

@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Lecture;
 import com.foxminded.univer.models.LectureMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class LectureDaoSpring {
 
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_LECTURE = "insert into lectures (course_id, auditorium_id, teacher_id, group_id, time) VALUES (?, ?, ?, ?, ?)";
@@ -31,7 +33,8 @@ public class LectureDaoSpring {
 	private final String GET_TEACHER_ID = "select teacher_id from lectures where id = ?";
 
 	@Autowired
-	public LectureDaoSpring(DataSource dataSource) {
+	public LectureDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 

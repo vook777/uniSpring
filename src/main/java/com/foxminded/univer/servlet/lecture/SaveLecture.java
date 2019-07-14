@@ -3,27 +3,36 @@ package com.foxminded.univer.servlet.lecture;
 import java.io.IOException;
 import java.time.LocalTime;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.foxminded.univer.service.AuditoriumService;
-import com.foxminded.univer.service.CourseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import com.foxminded.univer.service.GroupService;
 import com.foxminded.univer.service.LectureService;
 import com.foxminded.univer.service.TeacherService;
+import com.foxminded.univer.spring.dao.AuditoriumDaoSpring;
+import com.foxminded.univer.spring.dao.CourseDaoSpring;
 import com.foxminded.univer.models.Lecture;
 
 @WebServlet("/saveLecture")
 public class SaveLecture extends HttpServlet {
 
-	private LectureService lectureService = new LectureService();
-	private AuditoriumService auditoriumService = new AuditoriumService();
-	private CourseService courseService = new CourseService();
-	private GroupService groupService = new GroupService();
-	private TeacherService teacherService = new TeacherService();
+	@Autowired
+	private LectureService lectureService;
+	@Autowired
+	private AuditoriumDaoSpring auditoriumDao;
+	@Autowired
+	private CourseDaoSpring courseDao;
+	@Autowired
+	private GroupService groupService;
+	@Autowired
+	private TeacherService teacherService;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,8 +44,8 @@ public class SaveLecture extends HttpServlet {
 			lectureToSave.setId(Integer.parseInt(req.getParameter("id")));
 		}
 		try {
-			lectureToSave.setAuditorium(auditoriumService.findById(Integer.parseInt(req.getParameter("auditoriumId"))));
-			lectureToSave.setCourse(courseService.findById(Integer.parseInt(req.getParameter("courseId"))));
+			lectureToSave.setAuditorium(auditoriumDao.findById(Integer.parseInt(req.getParameter("auditoriumId"))));
+			lectureToSave.setCourse(courseDao.findById(Integer.parseInt(req.getParameter("courseId"))));
 			lectureToSave.setGroup(groupService.findById(Integer.parseInt(req.getParameter("groupId"))));
 			lectureToSave.setTeacher(teacherService.findById(Integer.parseInt(req.getParameter("teacherId"))));
 			lectureToSave.setTime(LocalTime.parse(req.getParameter("time")));
@@ -46,5 +55,10 @@ public class SaveLecture extends HttpServlet {
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
 		}
 		req.getRequestDispatcher("/lecture/showSaved.jsp").forward(req, resp);
+	}
+
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
 	}
 }

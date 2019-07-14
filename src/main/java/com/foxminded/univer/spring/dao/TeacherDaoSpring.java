@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Teacher;
 import com.foxminded.univer.models.TeacherMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class TeacherDaoSpring {
 
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_TEACHER = "insert into teachers (faculty_id, first_name, last_name) VALUES (?, ?, ?)";
@@ -28,7 +30,8 @@ public class TeacherDaoSpring {
 	private final String GET_FACULTY_ID = "select faculty_id from teachers where id = ?";
 
 	@Autowired
-	public TeacherDaoSpring(DataSource dataSource) {
+	public TeacherDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 

@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Student;
 import com.foxminded.univer.models.StudentMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class StudentDaoSpring {
 
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_STUDENT = "insert into students (student_card_number, firstname, lastname, group_id) VALUES (?, ?, ?, ?)";
@@ -28,7 +30,8 @@ public class StudentDaoSpring {
 	private final String GET_GROUP_ID = "select group_id from students where id = ?";
 
 	@Autowired
-	public StudentDaoSpring(DataSource dataSource) {
+	public StudentDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 

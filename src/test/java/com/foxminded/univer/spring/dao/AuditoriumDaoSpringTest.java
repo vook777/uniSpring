@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,17 +16,15 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 import com.foxminded.univer.models.Auditorium;
-import com.foxminded.univer.spring.config.AppConfig;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class})
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-		DbUnitTestExecutionListener.class })
-public class AuditoriumDaoSpringTest {
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+//@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+		//DbUnitTestExecutionListener.class })
+public class AuditoriumDaoSpringTest extends JUnitCore {
 	
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private AuditoriumDaoSpring auditoriumDao = context.getBean(AuditoriumDaoSpring.class);
+	@Autowired
+	private AuditoriumDaoSpring auditoriumDao;
 	
 	@Test
 	public void testSaveForNewAuditorium() throws ClassNotFoundException {

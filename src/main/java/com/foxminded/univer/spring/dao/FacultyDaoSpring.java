@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Faculty;
 import com.foxminded.univer.models.FacultyMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class FacultyDaoSpring {
-	
+
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_FACULTY = "insert into faculties (faculty_name) VALUES (?)";
@@ -29,7 +31,8 @@ public class FacultyDaoSpring {
 	private final String SQL_REMOVE_TEACHERS = "update teachers set faculty_id = null where faculty_id = ?";
 
 	@Autowired
-	public FacultyDaoSpring(DataSource dataSource) {
+	public FacultyDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -64,7 +67,7 @@ public class FacultyDaoSpring {
 	public void delete(Faculty faculty) {
 		Integer facultyId = faculty.getId();
 		removeAllGroupsFromFaculty(facultyId);
-        removeAllTeachersFromFaculty(facultyId);
+		removeAllTeachersFromFaculty(facultyId);
 		jdbcTemplate.update(SQL_DELETE_FACULTY, facultyId);
 	}
 
@@ -75,11 +78,11 @@ public class FacultyDaoSpring {
 	public List<Faculty> findAll() {
 		return jdbcTemplate.query(SQL_GET_ALL, new FacultyMapper());
 	}
-	
+
 	private void removeAllGroupsFromFaculty(Integer facultyId) {
 		jdbcTemplate.update(SQL_REMOVE_GROUPS, facultyId);
 	}
-	
+
 	private void removeAllTeachersFromFaculty(Integer facultyId) {
 		jdbcTemplate.update(SQL_REMOVE_TEACHERS, facultyId);
 	}

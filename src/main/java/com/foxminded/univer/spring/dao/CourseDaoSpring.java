@@ -14,10 +14,12 @@ import org.springframework.stereotype.Component;
 
 import com.foxminded.univer.models.Course;
 import com.foxminded.univer.models.CourseMapper;
+import com.foxminded.univer.spring.config.DataSourceForJdbcTemplate;
 
 @Component
 public class CourseDaoSpring {
 
+	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
 	private final String SQL_CREATE_COURSE = "insert into courses (name, number_of_weeks, description) VALUES (?, ?, ?)";
@@ -27,7 +29,8 @@ public class CourseDaoSpring {
 	private final String SQL_GET_ALL = "select * from courses";
 
 	@Autowired
-	public CourseDaoSpring(DataSource dataSource) {
+	public CourseDaoSpring(DataSourceForJdbcTemplate ds) {
+		dataSource = ds.getDataSource();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -40,15 +43,16 @@ public class CourseDaoSpring {
 		}
 		return courseToReturn;
 	}
-	
+
 	public Course create(Course course) {
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
 		jdbcTemplate.update(connection -> {
-			PreparedStatement statement = connection.prepareStatement(SQL_CREATE_COURSE, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = connection.prepareStatement(SQL_CREATE_COURSE,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, course.getName());
-            statement.setInt(2, course.getNumberOfWeeks());
-            statement.setString(3, course.getDescription());
+			statement.setInt(2, course.getNumberOfWeeks());
+			statement.setString(3, course.getDescription());
 			return statement;
 		}, keyHolder);
 		Integer id = (Integer) keyHolder.getKeys().get("id");
@@ -56,7 +60,8 @@ public class CourseDaoSpring {
 	}
 
 	public Course update(Course course) {
-		jdbcTemplate.update(SQL_UPDATE_COURSE, course.getName(), course.getNumberOfWeeks(), course.getDescription(), course.getId());
+		jdbcTemplate.update(SQL_UPDATE_COURSE, course.getName(), course.getNumberOfWeeks(), course.getDescription(),
+				course.getId());
 		return findById(course.getId());
 	}
 

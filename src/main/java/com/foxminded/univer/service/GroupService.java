@@ -2,22 +2,19 @@ package com.foxminded.univer.service;
 
 import java.util.List;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.foxminded.univer.dao.impl.FacultyDao;
-import com.foxminded.univer.dao.impl.GroupDao;
 import com.foxminded.univer.models.Faculty;
 import com.foxminded.univer.models.Group;
-import com.foxminded.univer.spring.config.AppConfig;
-import com.foxminded.univer.spring.dao.CourseDaoSpring;
 import com.foxminded.univer.spring.dao.FacultyDaoSpring;
 import com.foxminded.univer.spring.dao.GroupDaoSpring;
 
 public class GroupService {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-	private GroupDaoSpring groupDao = context.getBean(GroupDaoSpring.class);
-	private FacultyDaoSpring facultyDao = context.getBean(FacultyDaoSpring.class);
+	@Autowired
+	private GroupDaoSpring groupDao;
+	@Autowired
+	private FacultyDaoSpring facultyDao;
 	
 	public Group save(Integer id, String name, Integer facultyId) throws ClassNotFoundException {
 		Group groupToSave = new Group();
@@ -50,5 +47,21 @@ public class GroupService {
 	
 	public List<Group> findByFacultyId(Integer facultyId) throws ClassNotFoundException {
 		return groupDao.findByFacultyId(facultyId);
+	}
+
+	public GroupDaoSpring getGroupDao() {
+		return groupDao;
+	}
+
+	public void setGroupDao(GroupDaoSpring groupDao) {
+		this.groupDao = groupDao;
+	}
+
+	public FacultyDaoSpring getFacultyDao() {
+		return facultyDao;
+	}
+
+	public void setFacultyDao(FacultyDaoSpring facultyDao) {
+		this.facultyDao = facultyDao;
 	}
 }

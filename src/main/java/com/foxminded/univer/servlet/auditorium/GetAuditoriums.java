@@ -12,22 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.foxminded.univer.service.AuditoriumService;
-import com.foxminded.univer.service.ServiceException;
+import com.foxminded.univer.spring.dao.AuditoriumDaoSpring;
 
 @WebServlet("/showAllAuditoriums")
 public class GetAuditoriums extends HttpServlet {
 
 	@Autowired
-	private AuditoriumService auditoriumService;
+	private AuditoriumDaoSpring auditoriumDao;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			req.setAttribute("auditoriums", auditoriumService.findAll());
-		} catch (ClassNotFoundException e) {
-			throw new ServiceException("Cannot get auditoriums");
-		}
+		req.setAttribute("auditoriums", auditoriumDao.findAll());
 		req.getRequestDispatcher("/auditorium/showAllAuditoriums.jsp").forward(req, resp);
 	}
 
