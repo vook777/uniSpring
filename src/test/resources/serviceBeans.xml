@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="groupService"
+		class="com.foxminded.univer.service.GroupService">
+		<property name="groupDao" ref="groupDao" />
+		<property name="facultyDao" ref="facultyDao" />
+	</bean>
+
+	<bean id="lectureService"
+		class="com.foxminded.univer.service.LectureService">
+		<property name="auditoriumDao" ref="auditoriumDao" />
+		<property name="courseDao" ref="courseDao" />
+		<property name="groupDao" ref="groupDao" />
+		<property name="lectureDao" ref="lectureDao" />
+		<property name="teacherDao" ref="teacherDao" />
+	</bean>
+
+	<bean id="studentService"
+		class="com.foxminded.univer.service.StudentService">
+		<property name="facultyDao" ref="facultyDao" />
+		<property name="groupDao" ref="groupDao" />
+		<property name="studentDao" ref="studentDao" />
+	</bean>
+
+	<bean id="teacherService"
+		class="com.foxminded.univer.service.TeacherService">
+		<property name="facultyDao" ref="facultyDao" />
+		<property name="teacherDao" ref="teacherDao" />
+	</bean>
+
+</beans>

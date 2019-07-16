@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+	<bean id="auditoriumDao"
+		class="com.foxminded.univer.spring.dao.AuditoriumDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="courseDao"
+		class="com.foxminded.univer.spring.dao.CourseDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="facultyDao"
+		class="com.foxminded.univer.spring.dao.FacultyDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="groupDao"
+		class="com.foxminded.univer.spring.dao.GroupDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="lectureDao"
+		class="com.foxminded.univer.spring.dao.LectureDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="studentDao"
+		class="com.foxminded.univer.spring.dao.StudentDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+	<bean id="teacherDao"
+		class="com.foxminded.univer.spring.dao.TeacherDaoSpring">
+		<constructor-arg ref="datasource" />
+	</bean>
+
+</beans>
